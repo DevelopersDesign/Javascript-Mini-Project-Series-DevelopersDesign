@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Dictionary App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CDN Link for Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+    /* Import Google Font - Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #4D59FB;
+    }
+
+    ::selection {
+      color: #fff;
+      background: #4D59FB;
+    }
+
+    .wrapper {
+      width: 420px;
+      border-radius: 7px;
+      background: #fff;
+      padding: 25px 28px 45px;
+      box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .wrapper header {
+      font-size: 28px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .wrapper .search {
+      position: relative;
+      margin: 35px 0 18px;
+    }
+
+    .search input {
+      height: 53px;
+      width: 100%;
+      outline: none;
+      font-size: 16px;
+      border-radius: 5px;
+      padding: 0 42px;
+      border: 1px solid #999;
+    }
+
+    .search input:focus {
+      padding: 0 41px;
+      border: 2px solid #4D59FB;
+    }
+
+    .search input::placeholder {
+      color: #B8B8B8;
+    }
+
+    .search :where(i, span) {
+      position: absolute;
+      top: 50%;
+      color: #999;
+      transform: translateY(-50%);
+    }
+
+    .search i {
+      left: 18px;
+      pointer-events: none;
+      font-size: 16px;
+    }
+
+    .search input:focus~i {
+      color: #4D59FB;
+    }
+
+    .search span {
+      right: 15px;
+      cursor: pointer;
+      font-size: 18px;
+      display: none;
+    }
+
+    .search input:valid~span {
+      display: block;
+    }
+
+    .wrapper .info-text {
+      font-size: 13px;
+      color: #9A9A9A;
+      margin: -3px 0 -10px;
+    }
+
+    .wrapper.active .info-text {
+      display: none;
+    }
+
+    .info-text span {
+      font-weight: 500;
+    }
+
+    .wrapper ul {
+      height: 0;
+      opacity: 0;
+      padding-right: 1px;
+      overflow-y: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .wrapper.active ul {
+      opacity: 1;
+      height: 303px;
+    }
+
+    .wrapper ul li {
+      display: flex;
+      list-style: none;
+      margin-bottom: 14px;
+      align-items: center;
+      padding-bottom: 17px;
+      border-bottom: 1px solid #D9D9D9;
+      justify-content: space-between;
+    }
+
+    ul li:last-child {
+      margin-bottom: 0;
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    ul .word p {
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    ul .word span {
+      font-size: 12px;
+      color: #989898;
+    }
+
+    ul .word i {
+      color: #999;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    ul .content {
+      max-height: 215px;
+      overflow-y: auto;
+    }
+
+    ul .content::-webkit-scrollbar {
+      width: 0px;
+    }
+
+    .content li .details {
+      padding-left: 10px;
+      border-radius: 4px 0 0 4px;
+      border-left: 3px solid #4D59FB;
+    }
+
+    .content li p {
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .content li span {
+      font-size: 15px;
+      color: #7E7E7E;
+    }
+
+    .content .synonyms .list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .content .synonyms span {
+      cursor: pointer;
+      margin-right: 5px;
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #0f4698;
+      color: #fff;
+      font-size: 1.5rem;
+      padding: 35px;
+      text-align: center;
+      position: absolute;
+      right: 0px;
+      left: 0px;
+      bottom: 0px;
+    }
+
+    .developers{
+      display: flex;
+      position: absolute;
+      width: 100%;
+      top: 0%;
+    }
+    
+.nav-wrapper {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+  width: 90%;
+  height: 80px;
+  border-radius: 0 0 15px 15px;
+  padding: 0 25px;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.logo {
+  height: 60px;
+}
+
+.nav-tabs {
+  display: flex;
+  font-weight: 600;
+  font-size: 18px;
+  list-style: none;
+}
+
+.nav-tab:not(:last-child) {
+  padding: 10px 25px;
+  margin: 0;
+  border-right: 1px solid #eee;
+}
+
+.nav-tab:last-child {
+  padding: 10px 0 0 25px;
+}
+
+.nav-tab,
+.menu-btn {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .nav-container {
+    position: fixed;
+    display: none;
+    overflow-y: auto;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -1px 0 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-tabs {
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 80px;
+    width: 100%;
+  }
+
+  .nav-tab:not(:last-child) {
+    padding: 20px 25px;
+    margin: 0;
+    border-right: unset;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .nav-tab:last-child {
+    padding: 15px 25px;
+  }
+
+  .menu-btn {
+    position: relative;
+    display: block;
+    margin: 0;
+    width: 20px;
+    height: 15px;
+    cursor: pointer;
+    z-index: 2;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .menu-btn .menu {
+    display: block;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: #111;
+  }
+
+  .menu-btn .menu:nth-child(2) {
+    margin-top: 4px;
+    opacity: 1;
+  }
+
+  .menu-btn .menu:nth-child(3) {
+    margin-top: 4px;
+  }
+
+  #menuToggle:checked + .menu-btn .menu {
+    transition: transform 0.2s ease;
+  }
+
+  #menuToggle:checked + .menu-btn .menu:nth-child(1) {
+    transform: translate3d(0, 6px, 0) rotate(45deg);
+  }
+
+  #menuToggle:checked + .menu-btn .menu:nth-child(2) {
+    transform: rotate(-45deg) translate3d(-5.71429px, -6px, 0);
+    opacity: 0;
+  }
+
+  #menuToggle:checked + .menu-btn .menu:nth-child(3) {
+    transform: translate3d(0, -6px, 0) rotate(-45deg);
+  }
+
+  #menuToggle:checked ~ .nav-container {
+    z-index: 1;
+    display: flex;
+    animation: menu-slide-left 0.3s ease;
+  }
+  @keyframes menu-slide-left {
+    0% {
+      transform: translateX(200px);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+  </style>
+</head>
+
+<body>
+  <header class="developers">
+    <div class="nav-wrapper">
+        <div class="logo-container">
+            Arjun's Portfolio
+        </div>
+        <nav>
+            <input class="hidden" type="checkbox" id="menuToggle">
+            <label class="menu-btn" for="menuToggle">
+                <div class="menu"></div>
+                <div class="menu"></div>
+                <div class="menu"></div>
+            </label>
+            <div class="nav-container">
+                <ul class="nav-tabs">
+                    <li class="nav-tab">Home</li>
+                    <li class="nav-tab">About</li>
+                    <li class="nav-tab">Services</li>
+                    <li class="nav-tab">Projects</li>
+                    <li class="nav-tab">Contact</li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+  <div class="wrapper">
+    <header>English Dictionary</header>
+    <div class="search">
+      <input type="text" placeholder="Search a word" required spellcheck="false">
+      <i class="fas fa-search"></i>
+      <span class="material-icons">close</span>
+    </div>
+    <p class="info-text">Type any existing word and press enter to get meaning, example, synonyms, etc.</p>
+    <ul>
+      <li class="word">
+        <div class="details">
+          <p>__</p>
+          <span>_ _</span>
+        </div>
+        <i class="fas fa-volume-up"></i>
+      </li>
+      <div class="content">
+        <li class="meaning">
+          <div class="details">
+            <p>Meaning</p>
+            <span>___</span>
+          </div>
+        </li>
+        <li class="example">
+          <div class="details">
+            <p>Example</p>
+            <span>___</span>
+          </div>
+        </li>
+        <li class="synonyms">
+          <div class="details">
+            <p>Synonyms</p>
+            <div class="list"></div>
+          </div>
+        </li>
+      </div>
+    </ul>
+  </div>
+
+  <script>
+    const wrapper = document.querySelector(".wrapper"),
+      searchInput = wrapper.querySelector("input"),
+      volume = wrapper.querySelector(".word i"),
+      infoText = wrapper.querySelector(".info-text"),
+      synonyms = wrapper.querySelector(".synonyms .list"),
+      removeIcon = wrapper.querySelector(".search span");
+    let audio;
+
+    function data(result, word) {
+      if (result.title) {
+        infoText.innerHTML = `Can't find the meaning of <span>"${word}"</span>. Please, try to search for another word.`;
+      } else {
+        wrapper.classList.add("active");
+        let definitions = result[0].meanings[0].definitions[0],
+          phontetics = `${result[0].meanings[0].partOfSpeech}  /${result[0].phonetics[0].text}/`;
+        document.querySelector(".word p").innerText = result[0].word;
+        document.querySelector(".word span").innerText = phontetics;
+        document.querySelector(".meaning span").innerText = definitions.definition;
+        document.querySelector(".example span").innerText = definitions.example;
+        audio = new Audio(result[0].phonetics[0].audio);
+
+        if (definitions.synonyms[0] == undefined) {
+          synonyms.parentElement.style.display = "none";
+        } else {
+          synonyms.parentElement.style.display = "block";
+          synonyms.innerHTML = "";
+          for (let i = 0; i < 5; i++) {
+            let tag = `<span onclick="search('${definitions.synonyms[i]}')">${definitions.synonyms[i]},</span>`;
+            tag = i == 4 ? tag = `<span onclick="search('${definitions.synonyms[i]}')">${definitions.synonyms[4]}</span>` : tag;
+            synonyms.insertAdjacentHTML("beforeend", tag);
+          }
+        }
+      }
+    }
+
+    function search(word) {
+      fetchApi(word);
+      searchInput.value = word;
+    }
+
+    function fetchApi(word) {
+      wrapper.classList.remove("active");
+      infoText.style.color = "#000";
+      infoText.innerHTML = `Searching the meaning of <span>"${word}"</span>`;
+      let url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+      fetch(url).then(response => response.json()).then(result => data(result, word)).catch(() => {
+        infoText.innerHTML = `Can't find the meaning of <span>"${word}"</span>. Please, try to search for another word.`;
+      });
+    }
+
+    searchInput.addEventListener("keyup", e => {
+      let word = e.target.value.replace(/\s+/g, ' ');
+      if (e.key == "Enter" && word) {
+        fetchApi(word);
+      }
+    });
+
+    volume.addEventListener("click", () => {
+      volume.style.color = "#4D59FB";
+      audio.play();
+      setTimeout(() => {
+        volume.style.color = "#999";
+      }, 800);
+    });
+
+    removeIcon.addEventListener("click", () => {
+      searchInput.value = "";
+      searchInput.focus();
+      wrapper.classList.remove("active");
+      infoText.style.color = "#9A9A9A";
+      infoText.innerHTML = "Type any existing word and press enter to get meaning, example, synonyms, etc.";
+    });
+  </script>
+  <footer>
+    Copyright &copy;
+    <script>document.write(new Date().getFullYear())</script> English Dictionary | All Rights Reserved
+  </footer>
+</body>
+
+</html>
