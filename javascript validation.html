@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>
+            javascript validation 
+        </title>
+    </head>
+    <style>
+        form{
+            padding: 15%;
+            padding-left: 600px;
+            height: 200px;
+            width: 200px;
+            word-spacing: 2px;
+        }
+    </style>
+    <body>
+        <script>
+            function validation()
+            {
+                f1.fullname.value=(f1.firstname.value)+(f1.lastname.value);
+            }
+        </script>
+        <form name="f1">
+            <center>
+                enter first name:<input type="text" name="firstname"><br><br>
+                enter last     :<input type="text" name="lastname"><br><br>
+                <input type="button" value="Full Name" onclick="validation()"><br><br>
+                <input type="text" name="fullname" onfocus="this.blur();"><br><br>
+        </form>
+    </body>
+</html>
